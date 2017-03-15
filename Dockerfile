@@ -30,7 +30,7 @@ COPY cassandra-lucene-index-plugin-3.0.10.3.jar \
 COPY docker-entrypoint.sh \
      /opt/apache-cassandra/bin/
 
-ADD cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
+COPY kubernetes-cassandra.jar /kubernetes-cassandra.jar     
 
 RUN groupadd -r cassandra -g 312 && \
     useradd -u 313 -r -g cassandra -d /opt/apache-cassandra -s /sbin/nologin cassandra && \
