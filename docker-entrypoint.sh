@@ -56,7 +56,7 @@ sed -i 's/${HOSTNAME}/'$HOSTNAME'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
 
 echo "Setting seeds to be ${SEEDS}"
-sed -i 's/${SEEDS}/'${SEEDS}'/g' /opt/apache-cassandra/conf/cassandra.yaml
+sed -i 's/${SEEDS}/'$HOSTNAME'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
 # set the cluster name if set, default to "test_cluster" if not set
 if [ -n "$CLUSTER_NAME" ]; then
