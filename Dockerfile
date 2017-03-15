@@ -12,8 +12,6 @@ ENV CASSANDRA_VERSION="3.0.10" \
 
 USER root
 
-
-
 RUN yum install -y -q bind-utils && \
    yum clean all
 
@@ -31,6 +29,8 @@ COPY docker-entrypoint.sh \
      /opt/apache-cassandra/bin/
 
 COPY kubernetes-cassandra.jar /kubernetes-cassandra.jar     
+
+ADD cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
 
 RUN groupadd -r cassandra -g 312 && \
     useradd -u 313 -r -g cassandra -d /opt/apache-cassandra -s /sbin/nologin cassandra && \
