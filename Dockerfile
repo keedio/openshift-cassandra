@@ -21,8 +21,6 @@ RUN cd /opt &&\
     rm apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz && \
     ln -s apache-cassandra-$CASSANDRA_VERSION apache-cassandra
 
-COPY cassandra.yaml.template \
-     /opt/apache-cassandra/conf/
 
 COPY cassandra-lucene-index-plugin-3.0.10.3.jar \
      /opt/apache-cassandra/lib/
@@ -30,8 +28,10 @@ COPY cassandra-lucene-index-plugin-3.0.10.3.jar \
 COPY docker-entrypoint.sh \
      /opt/apache-cassandra/bin/
 
+ADD cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
+
 RUN  mkdir -p /var/lib/cassandra $HOME \
 	&& chown -R cassandra:cassandra /var/lib/cassandra $HOME \
-	&& chmod 777 /var/lib/cassandra "$HOME" && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh && chmod 777 /opt/apache-cassandra/conf/
+	&& chmod 777 /var/lib/cassandra "$HOME" && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh 
 
 VOLUME /var/lib/cassandra
