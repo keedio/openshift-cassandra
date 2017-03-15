@@ -93,8 +93,8 @@ DONE
 
 if [ -n "$CASSANDRA_HOME" ]; then
   # remove -R once CASSANDRA-12641 is fixed
-  exec ${CASSANDRA_HOME}/bin/cassandra -f -R
+  exec ${CASSANDRA_HOME}/bin/cassandra -f 
 else
   # remove -R once CASSANDRA-12641 is fixed
-  exec /opt/apache-cassandra/bin/cassandra -f -R
+  exec /opt/apache-cassandra/bin/cassandra -f 
 fi

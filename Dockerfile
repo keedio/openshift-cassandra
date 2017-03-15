@@ -29,6 +29,7 @@ COPY cassandra-lucene-index-plugin-3.0.10.3.jar \
 
 COPY docker-entrypoint.sh \
      /opt/apache-cassandra/bin/
+COPY cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
 
 RUN  mkdir -p /var/lib/cassandra $HOME \
 	&& chown -R cassandra:cassandra /var/lib/cassandra $HOME \
