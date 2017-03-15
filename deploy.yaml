@@ -24,12 +24,11 @@ objects:
     name: ${OBJECT_NAME_PREFIX}-1
   spec:
     replicas: 1
-    selector:
-      deploymentconfig: ${OBJECT_NAME_PREFIX}-1
     template:
       metadata:
         labels:
-          deploymentconfig: ${OBJECT_NAME_PREFIX}-1
+          app: ${OBJECT_NAME_PREFIX}
+          node: node-1
       spec:
         containers:
         - name: cassandra-cql
@@ -37,8 +36,6 @@ objects:
           command:
           - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
           - "--cluster_name=openstack-cluster"
-          - "--seeds=${HOSTNAME}" 
-          value: ${OBJECT_NAME_PREFIX}-1   
           ports:
           - name: cql-port
             containerPort: 9042
@@ -65,27 +62,16 @@ objects:
           name: ${OBJECT_NAME_PREFIX}
 
 - apiVersion: v1
-  kind: Service
-  metadata:
-    name: ${OBJECT_NAME_PREFIX}-1
-  spec:
-    ports:
-    - port: 9042
-    selector:
-      deploymentconfig: ${OBJECT_NAME_PREFIX}-1   
-
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: ${OBJECT_NAME_PREFIX}-2
   spec:
     replicas: 1
-    selector:
-      deploymentconfig: ${OBJECT_NAME_PREFIX}-2
     template:
       metadata:
         labels:
-          deploymentconfig: ${OBJECT_NAME_PREFIX}-2
+          app: ${OBJECT_NAME_PREFIX}
+          node: node-2
       spec:
         containers:
         - name: cassandra-cql
@@ -93,7 +79,7 @@ objects:
           command:
           - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
           - "--cluster_name=openstack-cluster"
-          - "--seeds=${HOSTNAME}" 
+          - "--seeds=$HOSTNAME"
           ports:
           - name: cql-port
             containerPort: 9042
@@ -122,9 +108,9 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: ${OBJECT_NAME_PREFIX}-2
+    name: ${OBJECT_NAME_PREFIX}
   spec:
     ports:
     - port: 9042
     selector:
-      deploymentconfig: ${OBJECT_NAME_PREFIX}-2       
+      app: ${OBJECT_NAME_PREFIX}      

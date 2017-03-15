@@ -51,9 +51,6 @@ if [ -n "$HELP" ]; then
   exit 0
 fi
 
-
-cp /opt/apache-cassandra/conf/cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
-
 # set the hostname in the cassandra configuration file
 sed -i 's/${HOSTNAME}/'$HOSTNAME'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
