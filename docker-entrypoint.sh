@@ -51,6 +51,7 @@ if [ -n "$HELP" ]; then
   exit 0
 fi
 
+whoami
 
 cp /opt/apache-cassandra/conf/cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
 
