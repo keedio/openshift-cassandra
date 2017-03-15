@@ -1,0 +1,133 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: openstack-cassandra-deploy
+  annotations:
+    description: Cassandra  cqlsh deploy
+    tags: logs,poc,openstack,cassandra
+
+parameters:
+- name: SOURCE_REPOSITORY_URL
+  description: URL of the Git repository Dockerfile
+  required: true
+  value: https://github.com/keedio/openstack-operations-poc.git
+- name: OBJECT_NAME_PREFIX
+  description: Name prefix for each object created
+  required: true
+  value: cassandra-openstack-poc
+
+objects:
+
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: ${OBJECT_NAME_PREFIX}-1
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: ${OBJECT_NAME_PREFIX}-1
+    template:
+      metadata:
+        labels:
+          deploymentconfig: ${OBJECT_NAME_PREFIX}-1
+      spec:
+        containers:
+        - name: cassandra-cql
+          image: ${OBJECT_NAME_PREFIX}
+          command:
+          - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
+          - "--cluster_name=openstack-cluster"
+          env:
+          - name: HOSTNAME
+            value: ${OBJECT_NAME_PREFIX}-1   
+          ports:
+          - name: cql-port
+            containerPort: 9042
+          - name: thift-port
+            containerPort: 9160
+          - name: tcp-port
+            containerPort: 7000
+          - name: ssl-port
+            containerPort: 7001    
+        volumeMounts:
+        - name: cassandra-data
+          mountPath: "/var/lib/cassandra"
+        volumes:
+        - name: cassandra-data          
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - cassandra-cql
+        from:
+          kind: ImageStream
+          name: ${OBJECT_NAME_PREFIX}
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ${OBJECT_NAME_PREFIX}-1
+  spec:
+    ports:
+    - port: 9042
+    selector:
+      deploymentconfig: ${OBJECT_NAME_PREFIX}-1   
+
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: ${OBJECT_NAME_PREFIX}-2
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: ${OBJECT_NAME_PREFIX}-2
+    template:
+      metadata:
+        labels:
+          deploymentconfig: ${OBJECT_NAME_PREFIX}-2
+      spec:
+        containers:
+        - name: cassandra-cql
+          image: ${OBJECT_NAME_PREFIX}
+          command:
+          - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
+          - "--cluster_name=openstack-cluster"
+          env:
+          - name: HOSTNAME
+            value: ${OBJECT_NAME_PREFIX}-2   
+          ports:
+          - name: cql-port
+            containerPort: 9042
+          - name: thift-port
+            containerPort: 9160
+          - name: tcp-port
+            containerPort: 7000
+          - name: ssl-port
+            containerPort: 7001    
+        volumeMounts:
+          - name: cassandra-data
+            mountPath: "/var/lib/cassandra"
+        volumes:
+        - name: cassandra-data          
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - cassandra-cql
+        from:
+          kind: ImageStream
+          name: ${OBJECT_NAME_PREFIX}
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ${OBJECT_NAME_PREFIX}-2
+  spec:
+    ports:
+    - port: 9042
+    selector:
+      deploymentconfig: ${OBJECT_NAME_PREFIX}-2       

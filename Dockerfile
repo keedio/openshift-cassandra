@@ -1,8 +1,6 @@
 
 FROM jboss/base-jdk:8
 
-
-
 EXPOSE 9042 9160 7000 7001
 
 
@@ -32,14 +30,8 @@ COPY cassandra-lucene-index-plugin-3.0.10.3.jar \
 COPY docker-entrypoint.sh \
      /opt/apache-cassandra/bin/
 
-
-
 RUN  mkdir -p /var/lib/cassandra $HOME \
 	&& chown -R cassandra:cassandra /var/lib/cassandra $HOME \
 	&& chmod 777 /var/lib/cassandra "$HOME" && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh
-	
+
 VOLUME /var/lib/cassandra
-
-
-
-CMD /opt/apache-cassandra/bin/docker-entrypoint.sh --seeds=${HOSTNAME}
