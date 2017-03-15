@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: openstack-cassandra-deploy
+  name: openstack-cassandra-poc
   annotations:
     description: Cassandra  cqlsh deploy
     tags: logs,poc,openstack,cassandra
@@ -37,9 +37,8 @@ objects:
           command:
           - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
           - "--cluster_name=openstack-cluster"
-          env:
-          - name: HOSTNAME
-            value: ${OBJECT_NAME_PREFIX}-1   
+          - "--seeds=${HOSTNAME}" 
+          value: ${OBJECT_NAME_PREFIX}-1   
           ports:
           - name: cql-port
             containerPort: 9042
@@ -94,9 +93,7 @@ objects:
           command:
           - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
           - "--cluster_name=openstack-cluster"
-          env:
-          - name: HOSTNAME
-            value: ${OBJECT_NAME_PREFIX}-2   
+          - "--seeds=${HOSTNAME}" 
           ports:
           - name: cql-port
             containerPort: 9042
