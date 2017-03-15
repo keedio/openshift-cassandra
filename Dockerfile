@@ -32,6 +32,6 @@ COPY docker-entrypoint.sh \
 
 RUN  mkdir -p /var/lib/cassandra $HOME \
 	&& chown -R cassandra:cassandra /var/lib/cassandra $HOME \
-	&& chmod 777 /var/lib/cassandra "$HOME" && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh && chmod +rw /opt/apache-cassandra/conf/
+	&& chmod 777 /var/lib/cassandra "$HOME" && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh && chmod 777 /opt/apache-cassandra/conf/
 
 VOLUME /var/lib/cassandra
