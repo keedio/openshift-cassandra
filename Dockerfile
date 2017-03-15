@@ -11,7 +11,9 @@ ENV CASSANDRA_VERSION="3.0.10" \
 
 
 USER root
-RUN groupadd -r cassandra  && useradd -r -g cassandra cassandra
+
+
+
 RUN yum install -y -q bind-utils && \
    yum clean all
 
@@ -30,8 +32,18 @@ COPY docker-entrypoint.sh \
 
 ADD cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
 
-RUN  mkdir -p /var/lib/cassandra $HOME \
-	&& chown -R cassandra:cassandra /var/lib/cassandra $HOME \
-	&& chmod 777 /var/lib/cassandra "$HOME" && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh 
+RUN groupadd -r cassandra -g 312 && \
+    useradd -u 313 -r -g cassandra -d /opt/apache-cassandra -s /sbin/nologin cassandra && \
+    chown -R cassandra:cassandra /opt/apache-cassandra && \
+    chmod -R go+rw /opt/apache-cassandra && \
+    mkdir $HOME && \
+    chown -R cassandra:cassandra $HOME && \
+    chmod -R go+rw $HOME
+
+RUN  mkdir -p /var/lib/cassandra \
+	&& chown -R cassandra:cassandra /var/lib/cassandra \
+	&& chmod 777 /var/lib/cassandra  && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh 
+
+USER 313	
 
 VOLUME /var/lib/cassandra
