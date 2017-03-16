@@ -1,5 +1,25 @@
 #!/bin/bash
 
+
+sleep 5
+
+my_ip=$(hostname --ip-address)
+
+CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE | \
+    grep -v "not found" | \
+    grep -v "connection timed out" | \
+    grep -v $my_ip | \
+    sort | \
+    head -3 | \
+    awk '{print $4}' | \
+    xargs)
+
+if [ ! -z "$CASSANDRA_SEEDS" ]; then
+    echo "Setting seeds to be ${SEEDS}"
+    sed -i 's/${SEEDS}/'CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
+fi
+
+
 mkdir -p /var/lib/cassandra/data
 mkdir -p /var/lib/cassandra/commitlog
 mkdir -p /var/lib/cassandra/saved_caches
@@ -7,10 +27,6 @@ mkdir -p /var/lib/cassandra/saved_caches
 
 # set the hostname in the cassandra configuration file
 sed -i 's/${HOSTNAME}/'$HOSTNAME'/g' /opt/apache-cassandra/conf/cassandra.yaml
-
-
-echo "Setting seeds to be ${SEEDS}"
-sed -i 's/${SEEDS}/'$( hostname -I)'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
 # set the cluster name if set, default to "test_cluster" if not set
 if [ -n "$CLUSTER_NAME" ]; then
