@@ -13,7 +13,7 @@ CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE | \
     head -3 | \
     awk '{print $4}' | \
     xargs)
-    
+
 sed -i 's/${SEEDS}/'$CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
 
@@ -37,8 +37,8 @@ cat /opt/apache-cassandra/conf/cassandra.yaml
 
 if [ -n "$CASSANDRA_HOME" ]; then
   # remove -R once CASSANDRA-12641 is fixed
-  exec ${CASSANDRA_HOME}/bin/cassandra -f 
+  exec ${CASSANDRA_HOME}/bin/cassandra -f -R
 else
   # remove -R once CASSANDRA-12641 is fixed
-  exec /opt/apache-cassandra/bin/cassandra -f 
+  exec /opt/apache-cassandra/bin/cassandra -f -R
 fi
