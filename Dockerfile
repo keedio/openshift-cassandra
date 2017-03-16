@@ -28,8 +28,6 @@ COPY cassandra-lucene-index-plugin-3.0.10.3.jar \
 COPY docker-entrypoint.sh \
      /opt/apache-cassandra/bin/
 
-COPY kubernetes-cassandra.jar /kubernetes-cassandra.jar     
-
 ADD cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
 
 RUN groupadd -r cassandra -g 312 && \
@@ -47,3 +45,5 @@ RUN  mkdir -p /var/lib/cassandra \
 USER 313	
 
 VOLUME /var/lib/cassandra
+
+

@@ -80,14 +80,17 @@ objects:
           - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
           - "--cluster_name=openstack-cluster"
           - "--seeds=$HOSTNAME"
+          env:
+            - name: PEER_DISCOVERY_SERVICE
+              value: cassandra-peers
           ports:
           - name: cql-port
             containerPort: 9042
           - name: thift-port
             containerPort: 9160
-          - name: tcp-port
+          - name:  intra-node-communication
             containerPort: 7000
-          - name: ssl-port
+          - name: tls-intra-node-communication
             containerPort: 7001    
         volumeMounts:
           - name: cassandra-data
@@ -108,9 +111,25 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
+    labels:
+      name: cassandra-peers
+    name: cassandra-peers
+  spec:
+    clusterIP: None
+    ports:
+      - port: 7000
+        name: intra-node-communication
+      - port: 7001
+        name: tls-intra-node-communication
+    selector:
+      app: ${OBJECT_NAME_PREFIX}      
+- apiVersion: v1
+  kind: Service
+  metadata:
     name: ${OBJECT_NAME_PREFIX}
   spec:
     ports:
     - port: 9042
+      name: cql-port
     selector:
       app: ${OBJECT_NAME_PREFIX}      
