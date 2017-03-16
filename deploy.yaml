@@ -43,13 +43,13 @@ objects:
             containerPort: 9042
           - name: thift-port
             containerPort: 9160
-          - name:  intra-node-communication
+          - name:  intra-node
             containerPort: 7000
-          - name: tls-intra-node-communication
+          - name: tls-intra
             containerPort: 7001    
         volumeMounts:
           - name: cassandra-data
-            mountPath: "/var/lib/cassandra"
+            mountPath: "/var/lib/cassandra/data"
         volumes:
         - name: cassandra-data          
     triggers:
@@ -73,9 +73,9 @@ objects:
     clusterIP: None
     ports:
       - port: 7000
-        name: intra-node-communication
+        name: intra-node
       - port: 7001
-        name: tls-intra-node-communication
+        name: tls-intra
     selector:
       app: ${OBJECT_NAME_PREFIX}      
 - apiVersion: v1

@@ -2,22 +2,13 @@
 
 
 sleep 5
-
 my_ip=$(hostname --ip-address)
 
-CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE | \
-    grep -v "not found" | \
-    grep -v "connection timed out" | \
-    grep -v $my_ip | \
-    sort | \
-    head -3 | \
-    awk '{print $4}' | \
-    xargs)
+CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE)
 
-if [ ! -z "$CASSANDRA_SEEDS" ]; then
-    echo "Setting seeds to be ${SEEDS}"
-    sed -i 's/${SEEDS}/'CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
-fi
+echo "Setting seeds to be $PEER_DISCOVERY_SERVICE)"
+sed -i 's/${SEEDS}/'$PEER_DISCOVERY_SERVICE'/g' /opt/apache-cassandra/conf/cassandra.yaml
+
 
 
 mkdir -p /var/lib/cassandra/data
@@ -35,6 +26,7 @@ else
     sed -i 's/${CLUSTER_NAME}/test_cluster/g' /opt/apache-cassandra/conf/cassandra.yaml
 fi
 
+cat /opt/apache-cassandra/conf/cassandra.yaml
 
 if [ -n "$CASSANDRA_HOME" ]; then
   # remove -R once CASSANDRA-12641 is fixed
