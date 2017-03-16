@@ -2,12 +2,18 @@
 
 
 sleep 5
+
 my_ip=$(hostname --ip-address)
 
-CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE)
-
-echo "Setting seeds to be $PEER_DISCOVERY_SERVICE)"
-sed -i 's/${SEEDS}/'$PEER_DISCOVERY_SERVICE'/g' /opt/apache-cassandra/conf/cassandra.yaml
+CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE | \
+    grep -v "not found" | \
+    grep -v "connection timed out" | \
+    grep -v $my_ip | \
+    sort | \
+    head -3 | \
+    awk '{print $4}' | \
+    xargs)
+sed -i 's/${SEEDS}/'$CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
 
 
