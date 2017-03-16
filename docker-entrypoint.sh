@@ -13,6 +13,7 @@ CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE | \
     head -3 | \
     awk '{print $4}' | \
     xargs)
+    
 sed -i 's/${SEEDS}/'$CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
 

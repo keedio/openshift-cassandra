@@ -38,6 +38,12 @@ objects:
           env:
             - name: PEER_DISCOVERY_SERVICE
               value: cassandra-peers
+            - name: CASSANDRA_CLUSTER_NAME
+              value: OpenStack cluster
+            - name: CASSANDRA_DC
+              value: DC1
+            - name: CASSANDRA_RACK
+              value: OpenStack rac
           ports:
           - name: cql-port
             containerPort: 9042
