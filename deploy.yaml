@@ -21,14 +21,13 @@ objects:
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
-    name: ${OBJECT_NAME_PREFIX}-1
+    name: ${OBJECT_NAME_PREFIX}
   spec:
-    replicas: 1
+    replicas: 2
     template:
       metadata:
         labels:
           app: ${OBJECT_NAME_PREFIX}
-          node: node-1
       spec:
         containers:
         - name: cassandra-cql
@@ -36,50 +35,6 @@ objects:
           command:
           - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
           - "--cluster_name=openstack-cluster"
-          ports:
-          - name: cql-port
-            containerPort: 9042
-          - name: thift-port
-            containerPort: 9160
-          - name: tcp-port
-            containerPort: 7000
-          - name: ssl-port
-            containerPort: 7001    
-        volumeMounts:
-        - name: cassandra-data
-          mountPath: "/var/lib/cassandra"
-        volumes:
-        - name: cassandra-data          
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - cassandra-cql
-        from:
-          kind: ImageStream
-          name: ${OBJECT_NAME_PREFIX}
-
-- apiVersion: v1
-  kind: DeploymentConfig
-  metadata:
-    name: ${OBJECT_NAME_PREFIX}-2
-  spec:
-    replicas: 1
-    template:
-      metadata:
-        labels:
-          app: ${OBJECT_NAME_PREFIX}
-          node: node-2
-      spec:
-        containers:
-        - name: cassandra-cql
-          image: ${OBJECT_NAME_PREFIX}
-          command:
-          - "/opt/apache-cassandra/bin/docker-entrypoint.sh"
-          - "--cluster_name=openstack-cluster"
-          - "--seeds=$HOSTNAME"
           env:
             - name: PEER_DISCOVERY_SERVICE
               value: cassandra-peers
