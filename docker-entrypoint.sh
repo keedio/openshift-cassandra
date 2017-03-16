@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-sleep 8
+sleep 5
 
 my_ip=$(hostname --ip-address)
 
@@ -14,11 +14,13 @@ CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE | \
     awk '{print $4}' | \
     xargs)
 
-#sed -i 's/${SEEDS}/'$CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
+echo "$CASSANDRA_SEEDS" 
+set -- "$CASSANDRA_SEEDS "   
+IFS=" "; declare -a Array=($*) 
+echo "${Array[0]}" 
 
-if [ ! -z "$CASSANDRA_SEEDS" ]; then
-    export CASSANDRA_SEEDS
-fi
+sed -i 's/${SEEDS}/'${Array[0]}'/g' /opt/apache-cassandra/conf/cassandra.yaml
+
 
 
 mkdir -p /var/lib/cassandra/data
