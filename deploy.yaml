@@ -7,23 +7,30 @@ metadata:
     tags: logs,poc,openstack,cassandra
 
 parameters:
-- name: SOURCE_REPOSITORY_URL
-  description: URL of the Git repository Dockerfile
-  required: true
-  value: https://github.com/keedio/openstack-operations-poc.git
 - name: OBJECT_NAME_PREFIX
   description: Name prefix for each object created
   required: true
   value: cassandra-openstack-poc
 
 objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: cassandra-claim
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi
+    volumeName: app3-pv  
 
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: ${OBJECT_NAME_PREFIX}
   spec:
-    replicas: 2
+    replicas: 3
     template:
       metadata:
         labels:
@@ -57,7 +64,8 @@ objects:
           - name: cassandra-data
             mountPath: "/var/lib/cassandra/data"
         volumes:
-        - name: cassandra-data          
+        - name: cassandra-data 
+             
     triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -89,8 +97,10 @@ objects:
   metadata:
     name: ${OBJECT_NAME_PREFIX}
   spec:
+    type: LoadBalancer
     ports:
     - port: 9042
       name: cql-port
+      nodePort: 31105
     selector:
       app: ${OBJECT_NAME_PREFIX}      
