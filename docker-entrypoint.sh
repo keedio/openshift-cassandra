@@ -8,7 +8,6 @@ my_ip=$(hostname --ip-address)
 CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE | \
     grep -v "not found" | \
     grep -v "connection timed out" | \
-    grep -v $my_ip | \
     sort | \
     head -3 | \
     awk '{print $4}' | \
