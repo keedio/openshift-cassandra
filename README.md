@@ -12,6 +12,7 @@ Firs of all, you should have persistent storage assigned.
 
 2. Import the templates in your OpenShift project throw the UI. Once yo have do it, the build and deployment should start automatically.
 
+3. Once the deployment has finished, create a route throw the UI.
 ## Template.yaml
 In this template, there are two objects:
 *	ImageStream: brings toghether a set of ‘n’ tagged container images in Docker format, so each time a new build is released, it will be tagged as ‘latest’. It’s similar than an image repository.
@@ -19,7 +20,7 @@ In this template, there are two objects:
 
 ## Deploy.yaml
 
-In this template, there are objects bellow:
+In this template, there are the objects bellow:
 
 *	PersistentVolumeClaim: it allows us to request for persistent storage for our data. It’s important to provide a name in order to associate it later (inside the deploy) to the logic volume, where Cassandra will store such data, in our case /var/lib/cassabdra/data
 *	DeploymentConfig: configuration that we want to attach to our deployment, it’s consist of several attributes:
