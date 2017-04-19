@@ -22,8 +22,8 @@ RUN cd /opt &&\
     ln -s apache-cassandra-$CASSANDRA_VERSION apache-cassandra
 
 
-COPY cassandra-lucene-index-plugin-3.0.10.3.jar \
-     /opt/apache-cassandra/lib/
+#COPY cassandra-lucene-index-plugin-3.0.10.3.jar \
+#     /opt/apache-cassandra/lib/
 
 #COPY cassandra-lucene-index-plugin-3.10.0-RC1-SNAPSHOT.jar \
 #     /opt/apache-cassandra/lib/     
