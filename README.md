@@ -35,3 +35,9 @@ In this template, there are the objects bellow:
 *	Cassandra-peers: this service will be used for the seeds to starting the gossip-protocol, thus, we’ll attached the ports 7000 and 7001, moreover we will indicate it throw the clusterIP = none attribute that it’s a headless service, that’s to say, we don’t 
 *	Cassandra-cql: this service will be exposed to the outside, for that their type attribute must take the LoadBalancer or NodePort value, service’s port will be 9042 and finally we will indicate that the nodePort (the port for which the service will listen to the outside) Is of the range [30000-32767], this way we get it to be routed by the latter from the outside to our cql service. For more information on how OpenShift does this I recommend visiting: https://docs.openshift.com/container-platform/3.4/install_config/routing_from_edge_lb.html and https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
 
+## Openshift UI
+
+From the UI, we can test our solution:
+
+![alt tag](https://drive.google.com/file/d/0B8zS_2D73-OjZnI4SjE5Z2w1aUU/view?usp=sharing)
+
