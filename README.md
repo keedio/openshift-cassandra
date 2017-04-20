@@ -31,7 +31,7 @@ In this template, there are the objects bellow:
 *	Ports: published ports by the container
 *	volumeMounts: logical volumes which will be generated inside the container
 *	triggers: will be responsible of executing a new deploy if the base image has changed or if the deploys configuration has changed to.
-* Services: such as we have mentioned before, we’ll need tow services:
+* Services: we’ll need two services:
 *	Cassandra-peers: this service will be used for the seeds to starting the gossip-protocol, thus, we’ll attached the ports 7000 and 7001, moreover we will indicate it throw the clusterIP = none attribute that it’s a headless service, that’s to say, we don’t 
 *	Cassandra-cql: this service will be exposed to the outside, for that their type attribute must take the LoadBalancer or NodePort value, service’s port will be 9042 and finally we will indicate that the nodePort (the port for which the service will listen to the outside) Is of the range [30000-32767], this way we get it to be routed by the latter from the outside to our cql service. For more information on how OpenShift does this I recommend visiting: https://docs.openshift.com/container-platform/3.4/install_config/routing_from_edge_lb.html and https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
 
