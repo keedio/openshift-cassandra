@@ -39,5 +39,5 @@ In this template, there are the objects bellow:
 
 From the UI, we can test our solution:
 
-![alt tag](https://drive.google.com/file/d/0B8zS_2D73-OjZnI4SjE5Z2w1aUU/view?usp=sharing)
+![alt tag](https://lh4.googleusercontent.com/AS9avmfrAGDvjNbSp8AGZ3JM8is37yrSfeeOClX5VVL11oyzz3i7YT8SAZIhd3I6iOKrP5ySgbHS6l0=w1920-h960-rw)
 
