@@ -35,6 +35,11 @@ objects:
       metadata:
         labels:
           app: ${OBJECT_NAME_PREFIX}
+          
+      volumes:
+      - name: cassandra-data
+        persistentVolumeClaim:
+          claimName: cassandra-claim     
       spec:
         containers:
         - name: cassandra-cql
@@ -63,8 +68,6 @@ objects:
         volumeMounts:
           - name: cassandra-data
             mountPath: "/var/lib/cassandra/data"
-        volumes:
-        - name: cassandra-data 
              
     triggers:
     - type: ConfigChange
