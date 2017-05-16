@@ -13,13 +13,14 @@ CASSANDRA_SEEDS=$(host $PEER_DISCOVERY_SERVICE | \
     awk '{print $4}' | \
     xargs)
 
-echo "$CASSANDRA_SEEDS" 
-set -- "$CASSANDRA_SEEDS "   
-IFS=" "; declare -a Array=($*) 
-echo "${Array[0]}" 
+splitSeeds=(${CASSANDRA_SEEDS// /,})
 
-sed -i 's/${SEEDS}/'$CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
+sed -i 's/${SEEDS}/'$splitSeeds'/g' /opt/apache-cassandra/conf/cassandra.yaml
+
+if [ ! -z "$CASSANDRA_SEEDS" ]; then
+    export CASSANDRA_SEEDS
+fi
 
 
 mkdir -p /var/lib/cassandra/data
