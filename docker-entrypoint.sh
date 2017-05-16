@@ -18,7 +18,7 @@ set -- "$CASSANDRA_SEEDS "
 IFS=" "; declare -a Array=($*) 
 echo "${Array[0]}" 
 
-sed -i 's/${SEEDS}/'${Array[0]}'/g' /opt/apache-cassandra/conf/cassandra.yaml
+sed -i 's/${SEEDS}/'$CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
 
 

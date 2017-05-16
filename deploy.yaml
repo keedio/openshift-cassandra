@@ -30,7 +30,7 @@ objects:
   metadata:
     name: ${OBJECT_NAME_PREFIX}
   spec:
-    replicas: 3
+    replicas: 1
     template:
       metadata:
         labels:
@@ -98,7 +98,7 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: ${OBJECT_NAME_PREFIX}
+    name: cassandra-cql
   spec:
     type: LoadBalancer
     ports:
