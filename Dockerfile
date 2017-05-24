@@ -31,6 +31,10 @@ RUN cd /opt &&\
 COPY docker-entrypoint.sh \
      /opt/apache-cassandra/bin/
 
+COPY docker-entrypoint-stateful-sets.sh \
+     /opt/apache-cassandra/bin/
+
+     
 ADD cassandra.yaml.template /opt/apache-cassandra/conf/cassandra.yaml
 
 RUN groupadd -r cassandra -g 312 && \
@@ -43,7 +47,7 @@ RUN groupadd -r cassandra -g 312 && \
 
 RUN  mkdir -p /var/lib/cassandra \
 	&& chown -R cassandra:cassandra /var/lib/cassandra \
-	&& chmod 777 /var/lib/cassandra  && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh 
+	&& chmod 777 /var/lib/cassandra  && chmod +x /opt/apache-cassandra/bin/docker-entrypoint.sh && chmod +x /opt/apache-cassandra/bin/docker-entrypoint-stateful-sets.sh
 
 USER 313	
 
