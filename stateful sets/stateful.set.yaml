@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: cassandra
+spec:
+  serviceName: "cassandra-peers"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: cassandra
+    spec:
+      containers:
+        - name: cassandra
+          image: 172.30.192.249:5000/stateful-sets/cassandra-openstack-poc:latest
+          restartPolicy: Always
+          command:
+          - "/opt/apache-cassandra/bin/docker-entrypoint-stateful-sets.sh"
+          env:
+            - name: CASSANDRA_SEEDS
+              value: 'cassandra-0.cassandra.default.svc.cluster.local'
+            - name: CASSANDRA_CLUSTER_NAME
+              value: OpenStack cluster
+            - name: CASSANDRA_DC
+              value: DC1
+            - name: CASSANDRA_RACK
+              value: OpenStack rac
+          ports:
+          - name: cql-port
+            containerPort: 9042
+          - name: thift-port
+            containerPort: 9160
+          - name:  intra-node
+            containerPort: 7000
+          - name: tls-intra
+            containerPort: 7001    
+          volumeMounts:
+            - name: cassandra-storage
+              mountPath: "/var/lib/cassandra/data"              
+  volumeClaimTemplates:
+    - metadata:
+        name: cassandra-storage
+      spec:
+        resources:
+          requests:
+            storage: 1Gi
+        accessModes:
+          - ReadWriteOnce          

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra-cql
+spec:
+  ports:
+    - port: 9042
+      name: clientport
+      targetPort : 9042
+      protocol: TCP
+  selector:
+    name: cassandra      
