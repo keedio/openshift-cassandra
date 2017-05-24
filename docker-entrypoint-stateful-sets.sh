@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo $CASSANDRA_SEEDS
+
+
+sed -i 's/${SEEDS}/'$CASSANDRA_SEEDS'/g' /opt/apache-cassandra/conf/cassandra.yaml
 
 if [ ! -z "$CASSANDRA_SEEDS" ]; then
     export CASSANDRA_SEEDS
