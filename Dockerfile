@@ -4,7 +4,7 @@ FROM jboss/base-jdk:8
 EXPOSE 9042 9160 7000 7001
 
 
-ENV CASSANDRA_VERSION="3.10" \
+ENV CASSANDRA_VERSION="3.11.2" \
     CASSANDRA_HOME="/opt/apache-cassandra" \
     HOME="/home/cassandra" \
     PATH="/opt/apache-cassandra/bin:$PATH" 
